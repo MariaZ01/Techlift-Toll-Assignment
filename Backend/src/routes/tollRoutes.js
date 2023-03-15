@@ -22,3 +22,12 @@ router.post("/entrypoint", async (req, res) => {
   }
 });
 module.exports = router;
+
+router.get("/getall", async (req,res) =>{
+    try{
+        const tolls = await Toll.find({});
+        res.send(tolls);
+    }catch(err){
+        res.status(400).send(err);
+    }
+})
