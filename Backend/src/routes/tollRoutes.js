@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
+
 const Toll = mongoose.model("Toll");
 const router = express.Router();
 
@@ -7,9 +8,15 @@ const router = express.Router();
 
 router.post("/entrypoint", async (req, res) => {
   try {
-    const entrypoint = req.body.entrypoint 
-    const day = req.body.day
-    const numberPlate = req.body.numberPlate
+    // inputs
+    const { entryPoint, day, numberPlate } = req.body;
+
+    // entry in database
+    const entry = new Toll({ entryPoint, day, numberPlate });
+    await entry.save();
+
+    // output
+    res.send(entry)
   } catch (err) {
     res.status(400).send(err);
   }
