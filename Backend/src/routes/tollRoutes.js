@@ -26,7 +26,6 @@ router.post('/exitpoint', async (req, res) => {
   try {
     // check is entry was made from this number plate
     const { distance, exitPoint, numberPlate } = req.body;
-<<<<<<< HEAD
     const toll = await Toll.find({numberPlate});
     if(!toll) return res.sendStatus(404).send("no entry was made")
 
@@ -37,15 +36,7 @@ router.post('/exitpoint', async (req, res) => {
     const distanceCost = distancePerKmRate * (distance);
     res.send(distanceCost);
     
-=======
 
-    // Validation for number plate
-    const toll = await Toll.findOne({ numberPlate });
-    if (!toll) return res.status(404).send('entry for numberplate has not been made');
-
-
-
->>>>>>> 03fe82c7de568002e79d7f327c12dd26ccfaff6a
   } catch (err) {
     res.sendStatus(404).send(err);
   }
