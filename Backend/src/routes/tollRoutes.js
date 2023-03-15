@@ -26,10 +26,10 @@ router.post('/exitpoint', async (req, res) => {
   try {
     // check is entry was made from this number plate
     const { distance, exitPoint, numberPlate } = req.body;
-    const toll = await Toll.find({numberPlate});
-    if(!toll) return res.sendStatus(404).send("no entry was made")
+    const toll = await Toll.findOne({ numberPlate })
+    if (!toll) return res.status(404).send('yo')
 
-    // calculate distance
+    // constants
     const distancePerKmRate = 0.2;
     const baseRate = 20;
     //distance Cost = perkm rate * distance
@@ -38,7 +38,7 @@ router.post('/exitpoint', async (req, res) => {
     
 
   } catch (err) {
-    res.sendStatus(404).send(err);
+    res.status(404).send(err.message)
   }
 })
 
