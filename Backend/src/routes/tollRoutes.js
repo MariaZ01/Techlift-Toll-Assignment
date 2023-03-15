@@ -25,6 +25,9 @@ router.post("/entrypoint", async (req, res) => {
 router.post('/exitpoint', async (req, res) => {
   try {
     const { distance, exitPoint, numberPlate } = req.body;
+    const toll = await Toll.find(toll.numberPlate);
+    if(!toll) return error(err);
+    res.send(toll);
   } catch (err) {
     res.status(404).send(err);
   }
