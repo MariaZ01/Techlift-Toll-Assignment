@@ -21,13 +21,15 @@ router.post("/entrypoint", async (req, res) => {
     res.status(400).send(err);
   }
 });
-module.exports = router;
 
-router.get("/getall", async (req,res) =>{
-    try{
-        const tolls = await Toll.find({});
-        res.send(tolls);
-    }catch(err){
-        res.status(400).send(err);
-    }
+router.get("/getall", async (req, res) => {
+  try {
+    const tolls = await Toll.find({});
+    res.send(tolls);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 })
+
+
+module.exports = router;
