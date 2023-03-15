@@ -34,9 +34,17 @@ router.post('/exitpoint', async (req, res) => {
     const baseRate = 20;
     //distance Cost = perkm rate * distance
     const distanceCost = distancePerKmRate * (distance);
-    res.send(distanceCost);
     
+    //Base Cost
+    const baseCost = distanceCost+ baseRate;
+    // Final Cost
+    const FinalCost = baseCost * 1;
 
+    toll.distance = distance;
+    toll.exitPoint = exitPoint;
+    toll.cost = FinalCost;
+    toll.save();
+    res.send({toll});
   } catch (err) {
     res.status(404).send(err.message)
   }
