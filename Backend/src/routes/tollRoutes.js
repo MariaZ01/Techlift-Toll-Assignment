@@ -25,9 +25,13 @@ router.post("/entrypoint", async (req, res) => {
 router.post('/exitpoint', async (req, res) => {
   try {
     const { distance, exitPoint, numberPlate } = req.body;
-    const toll = await Toll.find(toll.numberPlate);
-    if(!toll) return error(err);
-    res.send(toll);
+
+    // Validation for number plate
+    const toll = await Toll.findOne({ numberPlate });
+    if (!toll) return res.status(404).send('entry for numberplate has not been made');
+
+
+
   } catch (err) {
     res.status(404).send(err);
   }
