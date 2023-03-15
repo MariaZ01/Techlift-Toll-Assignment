@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const TollRateSchema = new mongoose.Schema({
+const tollSchema = new mongoose.Schema({
   entryPoint:  String,
   exitPoint: String,
   tollRate: Number,
