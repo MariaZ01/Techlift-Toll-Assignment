@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 
 const tollSchema = new mongoose.Schema({
-  entryPoint:  String,
+  entryPoint: String,
   exitPoint: String,
   tollRate: Number,
   numberPlate: String,
   day: String,
-  specialDiscount: Number
+
+  distance: Number,
+  cost: Number
 });
 
 mongoose.model('Toll', tollSchema);

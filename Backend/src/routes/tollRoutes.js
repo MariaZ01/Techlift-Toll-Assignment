@@ -22,6 +22,14 @@ router.post("/entrypoint", async (req, res) => {
   }
 });
 
+router.post('/exitpoint', async (req, res) => {
+  try {
+    const { distance, exitPoint, numberPlate } = req.body;
+  } catch (err) {
+    res.status(404).send(err);
+  }
+})
+
 router.get("/getall", async (req, res) => {
   try {
     const tolls = await Toll.find({});
