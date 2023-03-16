@@ -50,18 +50,23 @@ router.post('/exitpoint', async (req, res) => {
     res.status(404).send(err.message)
   }
 })
-
-router.get("/getall", async (req, res) => {
+router.get('/tolls', async (req, res) => {
+ 
   try {
-    // pagination 
-
-    // find all entries in toll
-    const tolls = await Toll.find({});
-    res.send(tolls);
+    //Pagination
+    let { page, limit, fields, numberPlate } = req.query;
+    // default page and limits
+    page = !page ? 0 : parseInt(page) - 1;
+    limit = !limit ? 10 : parseInt(limit);
+    // get all entries in toll
+      const tolls = await Toll.find({})
+          .select(fields ? JSON.parse(fields) : [])
+          .limit(limit)
+          .skip(page * limit)
+          .sort({ day: -1 });
+      res.send(tolls)
   } catch (err) {
     res.status(400).send(err);
   }
 })
-
-
 module.exports = router;
