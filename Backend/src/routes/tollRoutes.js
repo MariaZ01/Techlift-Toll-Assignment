@@ -85,13 +85,15 @@ router.get("/tolls", async (req, res) => {
     res.status(400).send(err);
   }
 });
-router.delete("/deleteEntry/:id", async (req,res) =>{
-  try{
-      const id=req.params.id;
-      const delEntry = await User.findByIdAndDelete(id)
-      res.send("Entry has been deleted",delEntry)
-    } catch(err){
-      res.status(404).send(err);
-    }
-})
+router.delete('/deleteEntry/:id', async (req, res) => {
+  try {
+      const delEntry = await Toll.findByIdAndDelete(req.params.id);
+      if (!delEntry) {
+          return res.status(404).send("Entry has been deleted");
+      }
+      res.send(delEntry);
+  } catch (error) {
+      res.status(500).send(error);
+  }
+});
 module.exports = router;

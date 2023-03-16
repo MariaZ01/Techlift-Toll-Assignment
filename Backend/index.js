@@ -2,7 +2,6 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
-
 const port = 3000
 const app = express() 
 
@@ -12,10 +11,8 @@ require('./src/models/tollSchema')
 //routes
 const tollRoutes = require('./src/routes/tollRoutes') 
 
-
 app.use(bodyParser.json())
 app.use(tollRoutes)
-
 
 //connect db
 mongoose.connect(process.env.MONGO_URI);

@@ -6,7 +6,6 @@ const tollSchema = new mongoose.Schema({
   tollRate: Number,
   numberPlate: String,
   day: String,
-
   distance: Number,
   cost: Number
 });
