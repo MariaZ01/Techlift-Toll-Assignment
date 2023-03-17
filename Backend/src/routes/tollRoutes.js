@@ -10,15 +10,13 @@ router.post("/entrypoint", async (req, res) => {
   try {
     // inputs
     const { entryPoint, day, numberPlate } = req.body;
-    // validate inputs
-    if (!entryPoint) return res, "entryPoint is missing";
-    if (!day) return res, " day is missing";
-    if (!numberPlate) return res, "numberPlate is missing";
+
     // Number Plate in LLL-NNN format
 
     const tollnumberPlate = req.body.numberPlate;
 
     // Check if the number plate matches the LLL-NNN format
+
     const regex = /^[A-Z]{3}-\d{3}$/;
     if (!regex.test(numberPlate)) {
       res.status(400).json({ message: "Invalid number plate format" });
@@ -53,11 +51,23 @@ router.post("/exitpoint", async (req, res) => {
     const isweekend =
       toll.day.toLowerCase() == "saturday" ||
       toll.day.toLowerCase() == "sunday";
+    // Special Discount
+    const specialDiscountDays = ["Wednesday"];
+    const getDayOfWeek = (dateString) => {
+      const date = new Date(dateString);
+      const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
+      return dayOfWeek;
+    };
     //Base Cost
     const baseCost = distanceCost + baseRate;
     // Final Cost
     const FinalCost = baseCost * (isweekend ? 1.5 : 1);
-
+    // Discounted FInal Cost
+    const dayOfWeek = getDayOfWeek(Toll.day);
+    if (specialDiscountDays.includes(dayOfWeek)) {
+    const FinalCost = FinalCost - (FinalCost * 0.1);
+    }
+    
     toll.distance = distance;
     toll.exitPoint = exitPoint;
     toll.cost = FinalCost;
@@ -69,31 +79,22 @@ router.post("/exitpoint", async (req, res) => {
 });
 router.get("/tolls", async (req, res) => {
   try {
-    //Pagination
-    let { page, limit, fields, numberPlate } = req.query;
-    // default page and limits
-    page = !page ? 0 : parseInt(page) - 1;
-    limit = !limit ? 10 : parseInt(limit);
     // get all entries in toll
-    const tolls = await Toll.find({})
-      .select(fields ? JSON.parse(fields) : [])
-      .limit(limit)
-      .skip(page * limit)
-      .sort({ day: -1 });
+    const tolls = await Toll.find({});
     res.send(tolls);
   } catch (err) {
     res.status(400).send(err);
   }
 });
-router.delete('/deleteEntry/:id', async (req, res) => {
+router.delete("/deleteEntry/:id", async (req, res) => {
   try {
-      const delEntry = await Toll.findByIdAndDelete(req.params.id);
-      if (!delEntry) {
-          return res.status(404).send("Entry has been deleted");
-      }
-      res.send(delEntry);
+    const delEntry = await Toll.findByIdAndDelete(req.params.id);
+    if (!delEntry) {
+      return res.status(404).send("Entry has been deleted");
+    }
+    res.send(delEntry);
   } catch (error) {
-      res.status(500).send(error);
+    res.status(500).send(error);
   }
 });
 module.exports = router;
