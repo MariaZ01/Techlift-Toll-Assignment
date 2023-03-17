@@ -45,28 +45,18 @@ router.post("/exitpoint", async (req, res) => {
     // constants
     const distancePerKmRate = 0.2;
     const baseRate = 20;
-    //distance Cost = perkm rate * distance
+    // distance Cost = perkm rate * distance
     const distanceCost = distancePerKmRate * distance;
     // weekends
     const isweekend =
       toll.day.toLowerCase() == "saturday" ||
       toll.day.toLowerCase() == "sunday";
-    // Special Discount
-    const specialDiscountDays = ["Wednesday"];
-    const getDayOfWeek = (dateString) => {
-      const date = new Date(dateString);
-      const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
-      return dayOfWeek;
-    };
-    //Base Cost
+    
+    //Base Cost = (distance Cost) + base rate
     const baseCost = distanceCost + baseRate;
     // Final Cost
     const FinalCost = baseCost * (isweekend ? 1.5 : 1);
-    // Discounted FInal Cost
-    const dayOfWeek = getDayOfWeek(Toll.day);
-    if (specialDiscountDays.includes(dayOfWeek)) {
-    const FinalCost = FinalCost - (FinalCost * 0.1);
-    }
+    
     
     toll.distance = distance;
     toll.exitPoint = exitPoint;
