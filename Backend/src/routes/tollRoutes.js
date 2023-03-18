@@ -19,10 +19,7 @@ router.post("/entrypoint", async (req, res) => {
 
     const regex = /^[A-Z]{3}-\d{3}$/;
     if (!regex.test(numberPlate)) {
-      res.status(400).json({ message: "Invalid number plate format" });
-    } else {
-      // Process the valid number plate as needed
-      res.json({ message: "Number plate accepted" });
+      return res.status(400).json({ message: "Invalid number plate format" });
     }
 
     // create new entry in database and store it
@@ -51,13 +48,12 @@ router.post("/exitpoint", async (req, res) => {
     const isweekend =
       toll.day.toLowerCase() == "saturday" ||
       toll.day.toLowerCase() == "sunday";
-    
+
     //Base Cost = (distance Cost) + base rate
     const baseCost = distanceCost + baseRate;
     // Final Cost
     const FinalCost = baseCost * (isweekend ? 1.5 : 1);
-    
-    
+
     toll.distance = distance;
     toll.exitPoint = exitPoint;
     toll.cost = FinalCost;
